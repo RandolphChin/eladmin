@@ -48,6 +48,27 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  rabbitmq:
+    host: ${DB_HOST:localhost}
+    port: ${DB_PORT:5672}
+    username: admin
+    password: admin
+    publisher-confirm-type: CORRELATED
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 1 # 消费端的监听个数(即@RabbitListener开启几个线程去处理数据)
+        max-concurrency: 10
+        prefetch: 1 # default 250
+        auto-startup: true
+        default-requeue-rejected: true
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        max-interval: 10000
+        multiplier: 1.0
 
 # 登录相关配置
 login:

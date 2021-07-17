@@ -2,6 +2,7 @@ package me.zhengjie;
 
 import me.zhengjie.modules.leaf.IDGen;
 import me.zhengjie.modules.leaf.common.Result;
+import me.zhengjie.modules.mq.service.MQSender;
 import me.zhengjie.modules.quartz.service.QuartzJobServices;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,13 @@ public class Testing {
             Result result = idGen.get("leaf-segment-test");
             System.out.println(result);
         }
+    }
+
+    @Autowired
+    private MQSender sender;
+
+    @Test
+    public void test(){
+        sender.delayTest();
     }
 }
