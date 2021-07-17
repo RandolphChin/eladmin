@@ -27,12 +27,14 @@ public class QuartzJobServicesImpl implements QuartzJobServices {
             //表达式调度构建器(即任务执行的时间)
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExp);
             //按新的cronExpression表达式构建一个新的trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, groupName).withSchedule(scheduleBuilder).build();
+            // scheduleBuilder.withMisfireHandlingInstructionDoNothing() 错误触发时间后不再触发
+            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, groupName).withSchedule(scheduleBuilder.withMisfireHandlingInstructionDoNothing()).build();
             //获得JobDataMap，写入数据到 trigger 的 job_data 中
             // 或 可以写入到 jobDetail 的job_data中
             // jobDetail.getJobDataMap().putAll(param);
             if (param != null) {
                 trigger.getJobDataMap().putAll(param);
+                jobDetail.getJobDataMap().putAll(param);
             }
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e){

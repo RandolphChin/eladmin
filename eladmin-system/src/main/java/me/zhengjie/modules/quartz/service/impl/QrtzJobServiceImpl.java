@@ -80,20 +80,21 @@ public class QrtzJobServiceImpl implements QrtzJobService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public QrtzJobDto create(QrtzJob resources) {
+        resources = qrtzJobRepository.save(resources);
         // 保存至 qrtz 表中
         quartzJobServices.addJob(resources.getJobClass(),resources.getJobName(),resources.getGroupName(),resources.getCronExpression(), new JSONObject(resources.getParam()).toBean(Map.class));
         resources.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        return qrtzJobMapper.toDto(qrtzJobRepository.save(resources));
+        return qrtzJobMapper.toDto(resources);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(QrtzJob resources) {
-        quartzJobServices.updateJob(resources.getJobName(),resources.getGroupName(),resources.getCronExpression(),new JSONObject(resources.getParam()).toBean(Map.class));
         QrtzJob qrtzJob = qrtzJobRepository.findById(resources.getId()).orElseGet(QrtzJob::new);
         ValidationUtil.isNull( qrtzJob.getId(),"QrtzJob","id",resources.getId());
         qrtzJob.copy(resources);
         qrtzJobRepository.save(qrtzJob);
+        quartzJobServices.updateJob(resources.getJobName(),resources.getGroupName(),resources.getCronExpression(),new JSONObject(resources.getParam()).toBean(Map.class));
     }
 
     @Override
