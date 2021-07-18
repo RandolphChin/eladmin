@@ -14,7 +14,8 @@ public class TestController {
 
     @RequestMapping("/api/test")
     public String test(){
-        sender.delayTest();
+        // sender.delayTest();
+        sender.generateDynamicQueue();
         return "ok";
     }
 }

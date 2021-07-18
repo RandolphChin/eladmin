@@ -1,10 +1,7 @@
 package me.zhengjie.modules.mq.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageBuilder;
-import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,9 @@ import java.util.UUID;
 public class MQSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private AmqpAdmin amqpAdmin;
 
     public void test(){
         rabbitTemplate.convertAndSend("queue","hello world");
@@ -39,5 +39,12 @@ public class MQSender {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("【插件延迟队列开始】【" + sdf.format(new Date()) + "】收到消息：");
         rabbitTemplate.convertAndSend("PLUGIN_DELAY_EXCHANGE","delay",message,correlationData);
+    }
+    // 使用 amqpAdmin 动态创建 queue 和 exchange
+    public void generateDynamicQueue(){
+        Queue queue = new Queue("dynamic_queue",true,false,false);
+        Binding binding = new Binding("dynamic_queue",Binding.DestinationType.QUEUE, "amq.fanout", "queue", null);
+        amqpAdmin.declareQueue(queue);
+        amqpAdmin.declareBinding(binding);
     }
 }

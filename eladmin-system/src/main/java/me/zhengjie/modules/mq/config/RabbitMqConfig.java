@@ -2,7 +2,9 @@ package me.zhengjie.modules.mq.config;
 
 import me.zhengjie.modules.mq.callback.MsgSendConfirmCallBack;
 import me.zhengjie.modules.mq.callback.MsgSendReturnCallback;
+import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,10 @@ public class RabbitMqConfig {
     @Bean
     public MsgSendReturnCallback msgSendReturnCallback(){
         return new MsgSendReturnCallback();
+    }
+
+    @Bean
+    public AmqpAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory);
     }
 }
