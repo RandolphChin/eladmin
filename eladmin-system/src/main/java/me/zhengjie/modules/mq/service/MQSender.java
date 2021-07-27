@@ -25,12 +25,10 @@ public class MQSender {
     }
 
     public void delayTest(){
-        MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("x-delay",40000);//延迟5秒被删除
         String msgId = UUID.randomUUID().toString();
 
         Message message = MessageBuilder.withBody("delay msg".getBytes())
-                .setHeader("x-delay",40000)
+                .setHeader("x-delay",60000)
         .setContentType(MessageProperties.CONTENT_TYPE_BYTES).setCorrelationId(msgId)
                 .build();
         /*将 msgId和 CorrelationData绑定*/
@@ -39,6 +37,19 @@ public class MQSender {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("【插件延迟队列开始】【" + sdf.format(new Date()) + "】收到消息：");
         rabbitTemplate.convertAndSend("PLUGIN_DELAY_EXCHANGE","delay",message,correlationData);
+
+        String msgId2 = UUID.randomUUID().toString();
+
+        Message message2 = MessageBuilder.withBody("delay msg22".getBytes())
+                .setHeader("x-delay",40000)
+                .setContentType(MessageProperties.CONTENT_TYPE_BYTES).setCorrelationId(msgId2)
+                .build();
+        /*将 msgId和 CorrelationData绑定*/
+        CorrelationData correlationData2 = new CorrelationData(msgId2);
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("【插件延迟队列开始】【" + sdf2.format(new Date()) + "】收到消息22：");
+        rabbitTemplate.convertAndSend("PLUGIN_DELAY_EXCHANGE","delay",message2,correlationData2);
     }
     // 使用 amqpAdmin 动态创建 queue 和 exchange
     public void generateDynamicQueue(){

@@ -19,7 +19,6 @@ public class MQReceiver {
         log.info(message);
     }
 
-    // @RabbitHandler
     @RabbitListener(queues = "PLUGIN_DELAY_QUEUE")//监听延时队列
     public void fanoutConsumer(Message message, Channel channel){
         String msg = new String(message.getBody());
