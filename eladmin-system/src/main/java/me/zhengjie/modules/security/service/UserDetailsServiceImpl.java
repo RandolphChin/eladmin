@@ -59,6 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public JwtUserDto loadUserByUsername(String username) {
         boolean searchDb = true;
         JwtUserDto jwtUserDto = null;
+        /*
         if (loginProperties.isCacheEnable() && userDtoCache.containsKey(username)) {
             jwtUserDto = userDtoCache.get(username);
             // 检查dataScope是否修改
@@ -67,6 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             dataScopes.addAll(dataService.getDeptIds(jwtUserDto.getUser()));
             searchDb = false;
         }
+        */
         if (searchDb) {
             UserDto user;
             try {
