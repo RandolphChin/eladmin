@@ -16,6 +16,8 @@
 **体验地址：**  [https://el-admin.xin](https://el-admin.xin)
 
 **账号密码：** `admin / 123456`
+### 添加支持多租户功能(租户字段形式)
+详情见 tenant 分支
 #### 基于eladmin添加的功能
  1. 美团 Leaf ID生成系统
  2. 定时任务quartz支持集群
