@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import me.zhengjie.base.BaseDTO;
+import me.zhengjie.modules.system.domain.Job;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +47,8 @@ public class DeptDto extends BaseDTO implements Serializable {
     private Long pid;
 
     private Integer subCount;
+
+    private Job job;
 
     public Boolean getHasChildren() {
         return subCount > 0;

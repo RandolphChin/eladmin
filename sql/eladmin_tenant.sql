@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : local
 Source Server Version : 50733
 Source Host           : 127.0.0.1:3306
-Source Database       : eladmin_init
+Source Database       : eladmin_tenant
 
 Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2021-07-17 11:07:49
+Date: 2021-07-29 11:42:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,11 +36,15 @@ CREATE TABLE `code_column_config` (
   `date_annotation` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`column_id`) USING BTREE,
   KEY `idx_table_name` (`table_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成字段信息存储';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成字段信息存储';
 
 -- ----------------------------
 -- Records of code_column_config
 -- ----------------------------
+INSERT INTO `code_column_config` VALUES ('1', 'testing', 'id', 'bigint', null, '', '\0', null, 'PRI', '', '', null, '', null);
+INSERT INTO `code_column_config` VALUES ('2', 'testing', 'dept_id', 'bigint', null, '', '\0', null, '', '', '\0', null, '展区', null);
+INSERT INTO `code_column_config` VALUES ('3', 'testing', 'job_id', 'bigint', null, '', '\0', null, '', '', '\0', null, '场馆', null);
+INSERT INTO `code_column_config` VALUES ('4', 'testing', 'name', 'varchar', null, '', '\0', null, '', '', '\0', null, '姓名', null);
 
 -- ----------------------------
 -- Table structure for code_gen_config
@@ -59,11 +63,12 @@ CREATE TABLE `code_gen_config` (
   `api_alias` varchar(255) DEFAULT NULL COMMENT '接口名称',
   PRIMARY KEY (`config_id`) USING BTREE,
   KEY `idx_table_name` (`table_name`(100))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成器配置';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成器配置';
 
 -- ----------------------------
 -- Records of code_gen_config
 -- ----------------------------
+INSERT INTO `code_gen_config` VALUES ('1', 'testing', 'wwe', '', 'eladmin-system', 'me.zhengjie.modules.test', 'E:\\frontend\\eladmin-web\\src\\views\\system\\test', 'E:\\frontend\\eladmin-web\\src\\api', null, '测试');
 
 -- ----------------------------
 -- Table structure for leaf_alloc
@@ -196,7 +201,7 @@ CREATE TABLE `mnt_server` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`server_id`) USING BTREE,
   KEY `idx_ip` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='服务器管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='服务器管理';
 
 -- ----------------------------
 -- Records of mnt_server
@@ -483,21 +488,18 @@ CREATE TABLE `sys_dept` (
   `update_by` varchar(255) DEFAULT NULL COMMENT '更新者',
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `job_id` bigint(20) DEFAULT NULL COMMENT '场馆ID',
   PRIMARY KEY (`dept_id`) USING BTREE,
   KEY `inx_pid` (`pid`),
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部门';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('2', '7', '1', '研发部', '3', '', 'admin', 'admin', '2019-03-25 09:15:32', '2020-08-02 14:48:47');
-INSERT INTO `sys_dept` VALUES ('5', '7', '0', '运维部', '4', '', 'admin', 'admin', '2019-03-25 09:20:44', '2020-05-17 14:27:27');
-INSERT INTO `sys_dept` VALUES ('6', '8', '0', '测试部', '6', '', 'admin', 'admin', '2019-03-25 09:52:18', '2020-06-08 11:59:21');
-INSERT INTO `sys_dept` VALUES ('7', null, '2', '华南分部', '0', '', 'admin', 'admin', '2019-03-25 11:04:50', '2020-06-08 12:08:56');
-INSERT INTO `sys_dept` VALUES ('8', null, '2', '华北分部', '1', '', 'admin', 'admin', '2019-03-25 11:04:53', '2020-05-14 12:54:00');
-INSERT INTO `sys_dept` VALUES ('15', '8', '0', 'UI部门', '7', '', 'admin', 'admin', '2020-05-13 22:56:53', '2020-05-14 12:54:13');
-INSERT INTO `sys_dept` VALUES ('17', '2', '0', '研发一组', '999', '', 'admin', 'admin', '2020-08-02 14:49:07', '2020-08-02 14:49:07');
+INSERT INTO `sys_dept` VALUES ('18', null, '0', '设备A区', '3', '', 'admin', 'admin', '2021-07-29 09:26:24', '2021-07-29 09:26:24', '11');
+INSERT INTO `sys_dept` VALUES ('19', null, '0', '设备B区', '1', '', 'admin', 'admin', '2021-07-29 10:04:30', '2021-07-29 10:04:30', '11');
+INSERT INTO `sys_dept` VALUES ('20', null, '0', '设备C区', '3', '', 'admin', 'admin', '2021-07-29 11:08:33', '2021-07-29 11:08:33', '10');
 
 -- ----------------------------
 -- Table structure for sys_dict
@@ -565,15 +567,15 @@ CREATE TABLE `sys_job` (
   PRIMARY KEY (`job_id`) USING BTREE,
   UNIQUE KEY `uniq_name` (`name`),
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='岗位';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='岗位';
 
 -- ----------------------------
 -- Records of sys_job
 -- ----------------------------
-INSERT INTO `sys_job` VALUES ('8', '人事专员', '', '3', null, null, '2019-03-29 14:52:28', null);
-INSERT INTO `sys_job` VALUES ('10', '产品经理', '', '4', null, null, '2019-03-29 14:55:51', null);
-INSERT INTO `sys_job` VALUES ('11', '全栈开发', '', '2', null, 'admin', '2019-03-31 13:39:30', '2020-05-05 11:33:43');
-INSERT INTO `sys_job` VALUES ('12', '软件测试', '', '5', null, 'admin', '2019-03-31 13:39:43', '2020-05-10 19:56:26');
+INSERT INTO `sys_job` VALUES ('8', '曲靖科技馆', '', '3', null, 'admin', '2019-03-29 14:52:28', '2021-07-28 17:41:59');
+INSERT INTO `sys_job` VALUES ('10', '内蒙科技馆', '', '4', null, 'admin', '2019-03-29 14:55:51', '2021-07-28 17:42:06');
+INSERT INTO `sys_job` VALUES ('11', '许昌科技馆', '', '2', null, 'admin', '2019-03-31 13:39:30', '2021-07-28 17:41:51');
+INSERT INTO `sys_job` VALUES ('12', '南充科技馆', '', '5', null, 'admin', '2019-03-31 13:39:43', '2021-07-28 17:42:15');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -595,7 +597,7 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `log_create_time_index` (`create_time`),
   KEY `inx_log_type` (`log_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=3594 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=3642 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
@@ -657,6 +659,54 @@ INSERT INTO `sys_log` VALUES ('3590', '修改Quartz集群定时', 'INFO', 'me.zh
 INSERT INTO `sys_log` VALUES ('3591', '查询Quartz集群定时', 'INFO', 'me.zhengjie.modules.quartz.rest.QrtzJobController.query()', '', '192.168.0.128', '12', 'admin', '内网IP', 'Chrome 91.0.4472.124', null, '2021-07-17 11:01:55');
 INSERT INTO `sys_log` VALUES ('3592', '修改Quartz集群定时', 'INFO', 'me.zhengjie.modules.quartz.rest.QrtzJobController.update()', '{\"jobName\":\"quartzTest\",\"description\":\"wwe\",\"isPause\":false,\"cronExpression\":\"0/20 * * * * ? *\",\"groupName\":\"default\",\"param\":\"{\\\"username\\\":\\\"roy\\\"}\",\"createTime\":1626490835000,\"jobClass\":\"me.zhengjie.modules.quartz.task.QuartzTest\",\"id\":5}', '192.168.0.128', '365', 'admin', '内网IP', 'Chrome 91.0.4472.124', null, '2021-07-17 11:05:04');
 INSERT INTO `sys_log` VALUES ('3593', '查询Quartz集群定时', 'INFO', 'me.zhengjie.modules.quartz.rest.QrtzJobController.query()', '', '192.168.0.128', '82', 'admin', '内网IP', 'Chrome 91.0.4472.124', null, '2021-07-17 11:05:04');
+INSERT INTO `sys_log` VALUES ('3594', '修改菜单', 'INFO', 'me.zhengjie.modules.system.rest.MenuController.update()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"dept\",\"permission\":\"dept:list\",\"pid\":1,\"title\":\"展区管理\",\"type\":1,\"subCount\":3,\"path\":\"dept\",\"component\":\"system/dept/index\",\"createTime\":1553478360000,\"iFrame\":false,\"id\":35,\"componentName\":\"Dept\",\"menuSort\":6}', '192.168.0.128', '418', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:40:12');
+INSERT INTO `sys_log` VALUES ('3595', '修改菜单', 'INFO', 'me.zhengjie.modules.system.rest.MenuController.update()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"Steve-Jobs\",\"permission\":\"job:list\",\"pid\":1,\"title\":\"场馆管理\",\"type\":1,\"subCount\":3,\"path\":\"job\",\"component\":\"system/job/index\",\"createTime\":1553838678000,\"iFrame\":false,\"id\":37,\"componentName\":\"Job\",\"menuSort\":7}', '192.168.0.128', '95', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:40:32');
+INSERT INTO `sys_log` VALUES ('3596', '修改岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.update()', '{\"updateTime\":1588649623000,\"enabled\":true,\"jobSort\":2,\"updateBy\":\"admin\",\"createTime\":1554010770000,\"name\":\"许昌科技馆\",\"id\":11}', '192.168.0.128', '58', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:41:51');
+INSERT INTO `sys_log` VALUES ('3597', '修改岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.update()', '{\"updateTime\":1588649623000,\"enabled\":true,\"jobSort\":3,\"updateBy\":\"admin\",\"createTime\":1553842348000,\"name\":\"曲靖科技馆\",\"id\":8}', '192.168.0.128', '33', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:41:59');
+INSERT INTO `sys_log` VALUES ('3598', '修改岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.update()', '{\"updateTime\":1588649623000,\"enabled\":true,\"jobSort\":4,\"updateBy\":\"admin\",\"createTime\":1553842551000,\"name\":\"内蒙科技馆\",\"id\":10}', '192.168.0.128', '28', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:42:06');
+INSERT INTO `sys_log` VALUES ('3599', '修改岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.update()', '{\"updateTime\":1589111786000,\"enabled\":true,\"jobSort\":5,\"updateBy\":\"admin\",\"createTime\":1554010783000,\"name\":\"南充科技馆\",\"id\":12}', '192.168.0.128', '30', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-28 17:42:15');
+INSERT INTO `sys_log` VALUES ('3600', '新增部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.create()', '{\"updateTime\":1627521983969,\"enabled\":true,\"deptSort\":3,\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627521983969,\"name\":\"设备A区\",\"id\":18,\"job\":{\"id\":11}}', '192.168.0.128', '41066', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 09:26:26');
+INSERT INTO `sys_log` VALUES ('3601', '修改用户', 'INFO', 'me.zhengjie.modules.system.rest.UserController.update()', '{\"gender\":\"男\",\"nickName\":\"管理员\",\"roles\":[],\"jobs\":[{\"updateTime\":1627465311000,\"enabled\":true,\"jobSort\":2,\"updateBy\":\"admin\",\"createTime\":1554010770000,\"name\":\"许昌科技馆\",\"id\":11}],\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"updateTime\":1599273811000,\"dept\":{\"subCount\":0,\"name\":\"研发部\",\"id\":18},\"isAdmin\":false,\"enabled\":true,\"avatarName\":\"avatar-20200806032259161.png\",\"phone\":\"18888888888\",\"pwdResetTime\":1588495111000,\"updateBy\":\"admin\",\"createTime\":1534986716000,\"id\":1,\"email\":\"201507802@qq.com\",\"username\":\"admin\"}', '192.168.0.128', '725', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:06');
+INSERT INTO `sys_log` VALUES ('3602', '删除用户', 'INFO', 'me.zhengjie.modules.system.rest.UserController.delete()', '[2]', '192.168.0.128', '87', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:14');
+INSERT INTO `sys_log` VALUES ('3603', '删除部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.delete()', '[17,5]', '192.168.0.128', '146', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:34');
+INSERT INTO `sys_log` VALUES ('3604', '删除部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.delete()', '[15]', '192.168.0.128', '50', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:39');
+INSERT INTO `sys_log` VALUES ('3605', '删除部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.delete()', '[8]', '192.168.0.128', '78', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:46');
+INSERT INTO `sys_log` VALUES ('3606', '删除部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.delete()', '[7]', '192.168.0.128', '73', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:03:50');
+INSERT INTO `sys_log` VALUES ('3607', '新增部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.create()', '{\"updateTime\":1627524269513,\"enabled\":true,\"deptSort\":1,\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627524269513,\"name\":\"设备B区\",\"id\":19,\"job\":{\"id\":11}}', '192.168.0.128', '5235', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:04:30');
+INSERT INTO `sys_log` VALUES ('3608', '新增菜单', 'ERROR', 'me.zhengjie.modules.system.rest.MenuController.create()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"chart\",\"permission\":\"testing:list\",\"pid\":1,\"title\":\"TEST\",\"type\":1,\"subCount\":3,\"path\":\"testing\",\"component\":\"system/testing/index\",\"createTime\":1545117284000,\"iFrame\":false,\"componentName\":\"TEST\",\"menuSort\":999}', '192.168.0.128', '41', 'admin', '内网IP', 'Chrome 92.0.4515.107', 'me.zhengjie.exception.EntityExistException: Menu with componentName TEST existed\r\n	at me.zhengjie.modules.system.service.impl.MenuServiceImpl.create(MenuServiceImpl.java:114)\r\n	at me.zhengjie.modules.system.service.impl.MenuServiceImpl$$FastClassBySpringCGLIB$$a0cfbc77.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)\r\n	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)\r\n	at me.zhengjie.modules.system.service.impl.MenuServiceImpl$$EnhancerBySpringCGLIB$$58550b6f.create(<generated>)\r\n	at me.zhengjie.modules.system.rest.MenuController.create(MenuController.java:120)\r\n	at me.zhengjie.modules.system.rest.MenuController$$FastClassBySpringCGLIB$$158b4bdf.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:62)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at me.zhengjie.aspect.LogAspect.logAround(LogAspect.java:68)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:644)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:633)\r\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:69)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)\r\n	at me.zhengjie.modules.system.rest.MenuController$$EnhancerBySpringCGLIB$$a2911161.create(<generated>)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)\r\n	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)\r\n	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)\r\n	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)\r\n	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)\r\n	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\r\n	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)\r\n	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)\r\n	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)\r\n	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)\r\n	at javax.servlet.http.HttpServlet.service(HttpServlet.java:652)\r\n	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)\r\n	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:124)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)\r\n	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)\r\n	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at me.zhengjie.modules.security.security.TokenFilter.doFilter(TokenFilter.java:90)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)\r\n	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)\r\n	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)\r\n	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)\r\n	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\r\n	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\r\n	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)\r\n	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)\r\n	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)\r\n	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\r\n	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\r\n	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\r\n	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\r\n	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)\r\n	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)\r\n	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)\r\n	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)\r\n	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)\r\n	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)\r\n	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)\r\n	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)\r\n	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)\r\n	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)\r\n	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)\r\n	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\r\n	at java.lang.Thread.run(Thread.java:748)\r\n', '2021-07-29 10:21:50');
+INSERT INTO `sys_log` VALUES ('3609', '新增菜单', 'INFO', 'me.zhengjie.modules.system.rest.MenuController.create()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"chart\",\"permission\":\"testing:list\",\"pid\":1,\"updateTime\":1627525327762,\"title\":\"TESTING\",\"type\":1,\"subCount\":0,\"path\":\"testing\",\"component\":\"system/testing/index\",\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627525327720,\"iFrame\":false,\"id\":117,\"componentName\":\"TESTing\",\"menuSort\":999}', '192.168.0.128', '239', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:22:08');
+INSERT INTO `sys_log` VALUES ('3610', '修改角色菜单', 'INFO', 'me.zhengjie.modules.system.rest.RoleController.updateMenu()', '{\"level\":3,\"dataScope\":\"本级\",\"id\":1,\"menus\":[{\"subCount\":0,\"id\":97,\"menuSort\":999},{\"subCount\":0,\"id\":98,\"menuSort\":999},{\"subCount\":0,\"id\":102,\"menuSort\":999},{\"subCount\":0,\"id\":103,\"menuSort\":999},{\"subCount\":0,\"id\":104,\"menuSort\":999},{\"subCount\":0,\"id\":105,\"menuSort\":999},{\"subCount\":0,\"id\":106,\"menuSort\":999},{\"subCount\":0,\"id\":107,\"menuSort\":999},{\"subCount\":0,\"id\":108,\"menuSort\":999},{\"subCount\":0,\"id\":109,\"menuSort\":999},{\"subCount\":0,\"id\":110,\"menuSort\":999},{\"subCount\":0,\"id\":111,\"menuSort\":999},{\"subCount\":0,\"id\":112,\"menuSort\":999},{\"subCount\":0,\"id\":113,\"menuSort\":999},{\"subCount\":0,\"id\":114,\"menuSort\":999},{\"subCount\":0,\"id\":116,\"menuSort\":999},{\"subCount\":0,\"id\":117,\"menuSort\":999},{\"subCount\":0,\"id\":1,\"menuSort\":999},{\"subCount\":0,\"id\":2,\"menuSort\":999},{\"subCount\":0,\"id\":3,\"menuSort\":999},{\"subCount\":0,\"id\":5,\"menuSort\":999},{\"subCount\":0,\"id\":6,\"menuSort\":999},{\"subCount\":0,\"id\":7,\"menuSort\":999},{\"subCount\":0,\"id\":9,\"menuSort\":999},{\"subCount\":0,\"id\":10,\"menuSort\":999},{\"subCount\":0,\"id\":11,\"menuSort\":999},{\"subCount\":0,\"id\":14,\"menuSort\":999},{\"subCount\":0,\"id\":15,\"menuSort\":999},{\"subCount\":0,\"id\":18,\"menuSort\":999},{\"subCount\":0,\"id\":19,\"menuSort\":999},{\"subCount\":0,\"id\":21,\"menuSort\":999},{\"subCount\":0,\"id\":22,\"menuSort\":999},{\"subCount\":0,\"id\":23,\"menuSort\":999},{\"subCount\":0,\"id\":24,\"menuSort\":999},{\"subCount\":0,\"id\":27,\"menuSort\":999},{\"subCount\":0,\"id\":28,\"menuSort\":999},{\"subCount\":0,\"id\":30,\"menuSort\":999},{\"subCount\":0,\"id\":32,\"menuSort\":999},{\"subCount\":0,\"id\":33,\"menuSort\":999},{\"subCount\":0,\"id\":34,\"menuSort\":999},{\"subCount\":0,\"id\":35,\"menuSort\":999},{\"subCount\":0,\"id\":36,\"menuSort\":999},{\"subCount\":0,\"id\":37,\"menuSort\":999},{\"subCount\":0,\"id\":38,\"menuSort\":999},{\"subCount\":0,\"id\":39,\"menuSort\":999},{\"subCount\":0,\"id\":41,\"menuSort\":999},{\"subCount\":0,\"id\":44,\"menuSort\":999},{\"subCount\":0,\"id\":45,\"menuSort\":999},{\"subCount\":0,\"id\":46,\"menuSort\":999},{\"subCount\":0,\"id\":48,\"menuSort\":999},{\"subCount\":0,\"id\":49,\"menuSort\":999},{\"subCount\":0,\"id\":50,\"menuSort\":999},{\"subCount\":0,\"id\":52,\"menuSort\":999},{\"subCount\":0,\"id\":53,\"menuSort\":999},{\"subCount\":0,\"id\":54,\"menuSort\":999},{\"subCount\":0,\"id\":56,\"menuSort\":999},{\"subCount\":0,\"id\":57,\"menuSort\":999},{\"subCount\":0,\"id\":58,\"menuSort\":999},{\"subCount\":0,\"id\":60,\"menuSort\":999},{\"subCount\":0,\"id\":61,\"menuSort\":999},{\"subCount\":0,\"id\":62,\"menuSort\":999},{\"subCount\":0,\"id\":64,\"menuSort\":999},{\"subCount\":0,\"id\":65,\"menuSort\":999},{\"subCount\":0,\"id\":66,\"menuSort\":999},{\"subCount\":0,\"id\":73,\"menuSort\":999},{\"subCount\":0,\"id\":74,\"menuSort\":999},{\"subCount\":0,\"id\":75,\"menuSort\":999},{\"subCount\":0,\"id\":77,\"menuSort\":999},{\"subCount\":0,\"id\":78,\"menuSort\":999},{\"subCount\":0,\"id\":79,\"menuSort\":999},{\"subCount\":0,\"id\":80,\"menuSort\":999},{\"subCount\":0,\"id\":82,\"menuSort\":999},{\"subCount\":0,\"id\":83,\"menuSort\":999},{\"subCount\":0,\"id\":90,\"menuSort\":999},{\"subCount\":0,\"id\":92,\"menuSort\":999},{\"subCount\":0,\"id\":93,\"menuSort\":999},{\"subCount\":0,\"id\":94,\"menuSort\":999}]}', '192.168.0.128', '208', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:22:32');
+INSERT INTO `sys_log` VALUES ('3611', '修改角色菜单', 'INFO', 'me.zhengjie.modules.system.rest.RoleController.updateMenu()', '{\"level\":3,\"dataScope\":\"本级\",\"id\":2,\"menus\":[{\"subCount\":0,\"id\":33,\"menuSort\":999},{\"subCount\":0,\"id\":34,\"menuSort\":999},{\"subCount\":0,\"id\":36,\"menuSort\":999},{\"subCount\":0,\"id\":116,\"menuSort\":999},{\"subCount\":0,\"id\":117,\"menuSort\":999},{\"subCount\":0,\"id\":1,\"menuSort\":999},{\"subCount\":0,\"id\":2,\"menuSort\":999},{\"subCount\":0,\"id\":6,\"menuSort\":999},{\"subCount\":0,\"id\":7,\"menuSort\":999},{\"subCount\":0,\"id\":9,\"menuSort\":999},{\"subCount\":0,\"id\":10,\"menuSort\":999},{\"subCount\":0,\"id\":11,\"menuSort\":999},{\"subCount\":0,\"id\":14,\"menuSort\":999},{\"subCount\":0,\"id\":15,\"menuSort\":999},{\"subCount\":0,\"id\":80,\"menuSort\":999},{\"subCount\":0,\"id\":82,\"menuSort\":999},{\"subCount\":0,\"id\":19,\"menuSort\":999},{\"subCount\":0,\"id\":83,\"menuSort\":999},{\"subCount\":0,\"id\":21,\"menuSort\":999},{\"subCount\":0,\"id\":22,\"menuSort\":999},{\"subCount\":0,\"id\":23,\"menuSort\":999},{\"subCount\":0,\"id\":24,\"menuSort\":999},{\"subCount\":0,\"id\":27,\"menuSort\":999},{\"subCount\":0,\"id\":30,\"menuSort\":999},{\"subCount\":0,\"id\":32,\"menuSort\":999}]}', '192.168.0.128', '69', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:22:44');
+INSERT INTO `sys_log` VALUES ('3612', '新增用户', 'INFO', 'me.zhengjie.modules.system.rest.UserController.create()', '{\"gender\":\"男\",\"nickName\":\"许昌1号\",\"roles\":[{\"level\":3,\"dataScope\":\"本级\",\"id\":2}],\"jobs\":[{\"id\":11}],\"updateTime\":1627525514384,\"dept\":{\"subCount\":0,\"id\":18},\"isAdmin\":false,\"enabled\":true,\"password\":\"$2a$10$CMNas9a2TKk3jrWQ/uuYDOY0groh4sdGOqVD2JnZ7uGeGMnnYJ1Yu\",\"createBy\":\"admin\",\"phone\":\"13245454545\",\"updateBy\":\"admin\",\"createTime\":1627525514384,\"id\":3,\"email\":\"12a@163.com\",\"username\":\"许昌1号\"}', '192.168.0.128', '218', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:25:14');
+INSERT INTO `sys_log` VALUES ('3613', '新增用户', 'INFO', 'me.zhengjie.modules.system.rest.UserController.create()', '{\"gender\":\"男\",\"nickName\":\"许昌2号\",\"roles\":[{\"level\":3,\"dataScope\":\"本级\",\"id\":2}],\"jobs\":[{\"id\":11}],\"updateTime\":1627525556302,\"dept\":{\"subCount\":0,\"id\":19},\"isAdmin\":false,\"enabled\":true,\"password\":\"$2a$10$rHMUal1xysh3d7toIwvCCuiftdV9YbaI0c3AZA9VH5D5klMthOs4.\",\"createBy\":\"admin\",\"phone\":\"13245457474\",\"updateBy\":\"admin\",\"createTime\":1627525556302,\"id\":4,\"email\":\"d152@152.com\",\"username\":\"许昌2号\"}', '192.168.0.128', '180', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:25:56');
+INSERT INTO `sys_log` VALUES ('3614', '新增角色', 'INFO', 'me.zhengjie.modules.system.rest.RoleController.create()', '{\"level\":3,\"updateTime\":1627525600196,\"dataScope\":\"自定义\",\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627525600196,\"name\":\"组合\",\"id\":3,\"depts\":[{\"subCount\":0,\"id\":19},{\"subCount\":0,\"id\":18}]}', '192.168.0.128', '42', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:26:40');
+INSERT INTO `sys_log` VALUES ('3615', '新增用户', 'INFO', 'me.zhengjie.modules.system.rest.UserController.create()', '{\"gender\":\"男\",\"nickName\":\"许昌\",\"roles\":[{\"level\":3,\"dataScope\":\"本级\",\"id\":3}],\"jobs\":[{\"id\":11}],\"updateTime\":1627525649240,\"dept\":{\"subCount\":0,\"id\":19},\"isAdmin\":false,\"enabled\":true,\"password\":\"$2a$10$9PSIN/oTZ/kqxVtY287E6OIeLEtwFBSdBOOWX6MP0LCEcMIxI.h46\",\"createBy\":\"admin\",\"phone\":\"13245784544\",\"updateBy\":\"admin\",\"createTime\":1627525649240,\"id\":5,\"email\":\"s45@152.com\",\"username\":\"许昌\"}', '192.168.0.128', '170', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:27:29');
+INSERT INTO `sys_log` VALUES ('3616', '修改菜单', 'INFO', 'me.zhengjie.modules.system.rest.MenuController.update()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"chart\",\"permission\":\"testing:list\",\"pid\":1,\"updateTime\":1627525328000,\"title\":\"TESTING\",\"type\":1,\"subCount\":0,\"path\":\"test\",\"component\":\"system/testing/index\",\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627525328000,\"iFrame\":false,\"id\":117,\"componentName\":\"TESTing\",\"menuSort\":999}', '192.168.0.128', '90', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:30:33');
+INSERT INTO `sys_log` VALUES ('3617', '修改菜单', 'INFO', 'me.zhengjie.modules.system.rest.MenuController.update()', '{\"cache\":false,\"hidden\":false,\"roles\":[],\"icon\":\"chart\",\"permission\":\"testing:list\",\"pid\":1,\"updateTime\":1627525832000,\"title\":\"TESTING\",\"type\":1,\"subCount\":0,\"path\":\"test\",\"component\":\"system/test/index\",\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627525328000,\"iFrame\":false,\"id\":117,\"componentName\":\"TESTing\",\"menuSort\":999}', '192.168.0.128', '72', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:31:09');
+INSERT INTO `sys_log` VALUES ('3618', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '33', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 10:31:19');
+INSERT INTO `sys_log` VALUES ('3619', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '139', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:00:25');
+INSERT INTO `sys_log` VALUES ('3620', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '36', '许昌1号', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:03:19');
+INSERT INTO `sys_log` VALUES ('3621', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '26', '许昌1号', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:03:50');
+INSERT INTO `sys_log` VALUES ('3622', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '26', '许昌1号', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:04:05');
+INSERT INTO `sys_log` VALUES ('3623', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '26', '许昌2号', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:05:01');
+INSERT INTO `sys_log` VALUES ('3624', '修改角色菜单', 'INFO', 'me.zhengjie.modules.system.rest.RoleController.updateMenu()', '{\"level\":3,\"dataScope\":\"本级\",\"id\":3,\"menus\":[{\"subCount\":0,\"id\":1,\"menuSort\":999},{\"subCount\":0,\"id\":117,\"menuSort\":999}]}', '192.168.0.128', '283', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:06:53');
+INSERT INTO `sys_log` VALUES ('3625', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '30', '许昌', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:07:22');
+INSERT INTO `sys_log` VALUES ('3626', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '24', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:07:44');
+INSERT INTO `sys_log` VALUES ('3627', '新增部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.create()', '{\"updateTime\":1627528113216,\"enabled\":true,\"deptSort\":3,\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627528113216,\"name\":\"设备C区\",\"id\":20,\"job\":{\"id\":10}}', '192.168.0.128', '58', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:08:33');
+INSERT INTO `sys_log` VALUES ('3628', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '26', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:09:52');
+INSERT INTO `sys_log` VALUES ('3629', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '28', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:10:08');
+INSERT INTO `sys_log` VALUES ('3630', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '28', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:10:36');
+INSERT INTO `sys_log` VALUES ('3631', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '23', 'admin', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:10:55');
+INSERT INTO `sys_log` VALUES ('3632', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '25', '许昌', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:11:58');
+INSERT INTO `sys_log` VALUES ('3633', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '21', '许昌1号', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:12:08');
+INSERT INTO `sys_log` VALUES ('3634', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '18', '许昌1号', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:12:22');
+INSERT INTO `sys_log` VALUES ('3635', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '24', '许昌', '内网IP', 'Firefox 90.0', null, '2021-07-29 11:15:28');
+INSERT INTO `sys_log` VALUES ('3636', '查询测试', 'INFO', 'me.zhengjie.modules.test.rest.TestingController.query()', '', '192.168.0.128', '186', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:25:50');
+INSERT INTO `sys_log` VALUES ('3637', '新增岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.create()', '{\"updateTime\":1627529170877,\"enabled\":true,\"jobSort\":5,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627529170877,\"name\":\"上海科技馆\",\"id\":13}', '192.168.0.128', '141', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:26:11');
+INSERT INTO `sys_log` VALUES ('3638', '新增部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.create()', '{\"updateTime\":1627529424029,\"enabled\":true,\"deptSort\":4,\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627529424029,\"name\":\"上海A区\",\"id\":21,\"job\":{\"id\":13}}', '192.168.0.128', '299', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:30:29');
+INSERT INTO `sys_log` VALUES ('3639', '新增部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.create()', '{\"updateTime\":1627529462159,\"enabled\":true,\"deptSort\":5,\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":1627529462159,\"name\":\"上海B区\",\"id\":22,\"job\":{\"id\":13}}', '192.168.0.128', '27', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:31:02');
+INSERT INTO `sys_log` VALUES ('3640', '删除部门', 'INFO', 'me.zhengjie.modules.system.rest.DeptController.delete()', '[22]', '192.168.0.128', '179', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:31:14');
+INSERT INTO `sys_log` VALUES ('3641', '删除岗位', 'INFO', 'me.zhengjie.modules.system.rest.JobController.delete()', '[13]', '192.168.0.128', '68', 'admin', '内网IP', 'Chrome 92.0.4515.107', null, '2021-07-29 11:31:46');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -690,7 +740,7 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', null, '7', '0', '系统管理', null, null, '1', 'system', 'system', '\0', '\0', '\0', null, null, null, '2018-12-18 15:11:29', null);
+INSERT INTO `sys_menu` VALUES ('1', null, '8', '0', '系统管理', null, null, '1', 'system', 'system', '\0', '\0', '\0', null, null, null, '2018-12-18 15:11:29', null);
 INSERT INTO `sys_menu` VALUES ('2', '1', '3', '1', '用户管理', 'User', 'system/user/index', '2', 'peoples', 'user', '\0', '\0', '\0', 'user:list', null, null, '2018-12-18 15:14:44', null);
 INSERT INTO `sys_menu` VALUES ('3', '1', '3', '1', '角色管理', 'Role', 'system/role/index', '3', 'role', 'role', '\0', '\0', '\0', 'roles:list', null, null, '2018-12-18 15:16:07', null);
 INSERT INTO `sys_menu` VALUES ('5', '1', '3', '1', '菜单管理', 'Menu', 'system/menu/index', '5', 'menu', 'menu', '\0', '\0', '\0', 'menu:list', null, null, '2018-12-18 15:17:28', null);
@@ -713,9 +763,9 @@ INSERT INTO `sys_menu` VALUES ('30', '36', '0', '1', '代码生成', 'GeneratorI
 INSERT INTO `sys_menu` VALUES ('32', '6', '0', '1', '异常日志', 'ErrorLog', 'monitor/log/errorLog', '12', 'error', 'errorLog', '\0', '\0', '\0', null, null, null, '2019-01-13 13:49:03', null);
 INSERT INTO `sys_menu` VALUES ('33', '10', '0', '1', 'Markdown', 'Markdown', 'components/MarkDown', '53', 'markdown', 'markdown', '\0', '\0', '\0', null, null, null, '2019-03-08 13:46:44', null);
 INSERT INTO `sys_menu` VALUES ('34', '10', '0', '1', 'Yaml编辑器', 'YamlEdit', 'components/YamlEdit', '54', 'dev', 'yaml', '\0', '\0', '\0', null, null, null, '2019-03-08 15:49:40', null);
-INSERT INTO `sys_menu` VALUES ('35', '1', '3', '1', '部门管理', 'Dept', 'system/dept/index', '6', 'dept', 'dept', '\0', '\0', '\0', 'dept:list', null, null, '2019-03-25 09:46:00', null);
+INSERT INTO `sys_menu` VALUES ('35', '1', '3', '1', '展区管理', 'Dept', 'system/dept/index', '6', 'dept', 'dept', '\0', '\0', '\0', 'dept:list', null, 'admin', '2019-03-25 09:46:00', '2021-07-28 17:40:12');
 INSERT INTO `sys_menu` VALUES ('36', null, '7', '0', '系统工具', null, '', '30', 'sys-tools', 'sys-tools', '\0', '\0', '\0', null, null, null, '2019-03-29 10:57:35', null);
-INSERT INTO `sys_menu` VALUES ('37', '1', '3', '1', '岗位管理', 'Job', 'system/job/index', '7', 'Steve-Jobs', 'job', '\0', '\0', '\0', 'job:list', null, null, '2019-03-29 13:51:18', null);
+INSERT INTO `sys_menu` VALUES ('37', '1', '3', '1', '场馆管理', 'Job', 'system/job/index', '7', 'Steve-Jobs', 'job', '\0', '\0', '\0', 'job:list', null, 'admin', '2019-03-29 13:51:18', '2021-07-28 17:40:32');
 INSERT INTO `sys_menu` VALUES ('38', '36', '0', '1', '接口文档', 'Swagger', 'tools/swagger/index', '36', 'swagger', 'swagger2', '\0', '\0', '\0', null, null, null, '2019-03-29 19:57:53', null);
 INSERT INTO `sys_menu` VALUES ('39', '1', '3', '1', '字典管理', 'Dict', 'system/dict/index', '8', 'dictionary', 'dict', '\0', '\0', '\0', 'dict:list', null, null, '2019-04-10 11:49:04', null);
 INSERT INTO `sys_menu` VALUES ('41', '6', '0', '1', '在线用户', 'OnlineUser', 'monitor/online/index', '10', 'Steve-Jobs', 'online', '\0', '\0', '\0', null, null, null, '2019-10-26 22:08:43', null);
@@ -766,6 +816,7 @@ INSERT INTO `sys_menu` VALUES ('112', '98', '0', '2', '数据库新增', null, '
 INSERT INTO `sys_menu` VALUES ('113', '98', '0', '2', '数据库编辑', null, '', '999', '', '', '\0', '\0', '\0', 'database:edit', null, null, '2019-11-17 11:12:58', null);
 INSERT INTO `sys_menu` VALUES ('114', '98', '0', '2', '数据库删除', null, '', '999', '', '', '\0', '\0', '\0', 'database:del', null, null, '2019-11-17 11:13:14', null);
 INSERT INTO `sys_menu` VALUES ('116', '36', '0', '1', '生成预览', 'Preview', 'generator/preview', '999', 'java', 'generator/preview/:tableName', '\0', '', '', null, null, null, '2019-11-26 14:54:36', null);
+INSERT INTO `sys_menu` VALUES ('117', '1', '0', '1', 'TESTING', 'TESTing', 'system/test/index', '999', 'chart', 'test', '\0', '\0', '\0', 'testing:list', 'admin', 'admin', '2021-07-29 10:22:08', '2021-07-29 10:31:09');
 
 -- ----------------------------
 -- Table structure for sys_quartz_job
@@ -816,7 +867,7 @@ CREATE TABLE `sys_quartz_log` (
   `params` varchar(255) DEFAULT NULL,
   `time` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定时任务日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定时任务日志';
 
 -- ----------------------------
 -- Records of sys_quartz_log
@@ -839,13 +890,14 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`role_id`) USING BTREE,
   UNIQUE KEY `uniq_name` (`name`),
   KEY `role_name_index` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '超级管理员', '1', '-', '全部', null, 'admin', '2018-11-23 11:04:37', '2020-08-06 16:10:24');
-INSERT INTO `sys_role` VALUES ('2', '普通用户', '2', '-', '本级', null, 'admin', '2018-11-23 13:09:06', '2020-09-05 10:45:12');
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '1', '-', '全部', null, 'admin', '2018-11-23 11:04:37', '2021-07-29 10:22:32');
+INSERT INTO `sys_role` VALUES ('2', '普通用户', '2', '-', '本级', null, 'admin', '2018-11-23 13:09:06', '2021-07-29 10:22:44');
+INSERT INTO `sys_role` VALUES ('3', '组合', '3', null, '自定义', 'admin', 'admin', '2021-07-29 10:26:40', '2021-07-29 11:06:53');
 
 -- ----------------------------
 -- Table structure for sys_roles_depts
@@ -861,6 +913,8 @@ CREATE TABLE `sys_roles_depts` (
 -- ----------------------------
 -- Records of sys_roles_depts
 -- ----------------------------
+INSERT INTO `sys_roles_depts` VALUES ('3', '18');
+INSERT INTO `sys_roles_depts` VALUES ('3', '19');
 
 -- ----------------------------
 -- Table structure for sys_roles_menus
@@ -952,6 +1006,7 @@ INSERT INTO `sys_roles_menus` VALUES ('112', '1');
 INSERT INTO `sys_roles_menus` VALUES ('113', '1');
 INSERT INTO `sys_roles_menus` VALUES ('114', '1');
 INSERT INTO `sys_roles_menus` VALUES ('116', '1');
+INSERT INTO `sys_roles_menus` VALUES ('117', '1');
 INSERT INTO `sys_roles_menus` VALUES ('120', '1');
 INSERT INTO `sys_roles_menus` VALUES ('1', '2');
 INSERT INTO `sys_roles_menus` VALUES ('2', '2');
@@ -977,6 +1032,9 @@ INSERT INTO `sys_roles_menus` VALUES ('80', '2');
 INSERT INTO `sys_roles_menus` VALUES ('82', '2');
 INSERT INTO `sys_roles_menus` VALUES ('83', '2');
 INSERT INTO `sys_roles_menus` VALUES ('116', '2');
+INSERT INTO `sys_roles_menus` VALUES ('117', '2');
+INSERT INTO `sys_roles_menus` VALUES ('1', '3');
+INSERT INTO `sys_roles_menus` VALUES ('117', '3');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1008,13 +1066,15 @@ CREATE TABLE `sys_user` (
   KEY `FK5rwmryny6jthaaxkogownknqp` (`dept_id`) USING BTREE,
   KEY `FKpq2dhypk2qgt68nauh2by22jb` (`avatar_name`) USING BTREE,
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '2', 'admin', '管理员', '男', '18888888888', '201507802@qq.com', 'avatar-20200806032259161.png', '/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png', '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', '', '1', null, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2020-09-05 10:43:31');
-INSERT INTO `sys_user` VALUES ('2', '2', 'test', '测试', '男', '19999999999', '231@qq.com', null, null, '$2a$10$4XcyudOYTSz6fue6KFNMHeUQnCX5jbBQypLEnGk1PmekXt5c95JcK', '\0', '1', 'admin', 'admin', null, '2020-05-05 11:15:49', '2020-09-05 10:43:38');
+INSERT INTO `sys_user` VALUES ('1', '18', 'admin', '管理员', '男', '18888888888', '201507802@qq.com', 'avatar-20200806032259161.png', '/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png', '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', '', '1', null, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2021-07-29 10:03:01');
+INSERT INTO `sys_user` VALUES ('3', '18', '许昌1号', '许昌1号', '男', '13245454545', '12a@163.com', null, null, '$2a$10$CMNas9a2TKk3jrWQ/uuYDOY0groh4sdGOqVD2JnZ7uGeGMnnYJ1Yu', '\0', '1', 'admin', 'admin', null, '2021-07-29 10:25:14', '2021-07-29 10:25:14');
+INSERT INTO `sys_user` VALUES ('4', '19', '许昌2号', '许昌2号', '男', '13245457474', 'd152@152.com', null, null, '$2a$10$rHMUal1xysh3d7toIwvCCuiftdV9YbaI0c3AZA9VH5D5klMthOs4.', '\0', '1', 'admin', 'admin', null, '2021-07-29 10:25:56', '2021-07-29 10:25:56');
+INSERT INTO `sys_user` VALUES ('5', '19', '许昌', '许昌', '男', '13245784544', 's45@152.com', null, null, '$2a$10$9PSIN/oTZ/kqxVtY287E6OIeLEtwFBSdBOOWX6MP0LCEcMIxI.h46', '\0', '1', 'admin', 'admin', null, '2021-07-29 10:27:29', '2021-07-29 10:27:29');
 
 -- ----------------------------
 -- Table structure for sys_users_jobs
@@ -1030,7 +1090,9 @@ CREATE TABLE `sys_users_jobs` (
 -- Records of sys_users_jobs
 -- ----------------------------
 INSERT INTO `sys_users_jobs` VALUES ('1', '11');
-INSERT INTO `sys_users_jobs` VALUES ('2', '12');
+INSERT INTO `sys_users_jobs` VALUES ('3', '11');
+INSERT INTO `sys_users_jobs` VALUES ('4', '11');
+INSERT INTO `sys_users_jobs` VALUES ('5', '11');
 
 -- ----------------------------
 -- Table structure for sys_users_roles
@@ -1047,7 +1109,30 @@ CREATE TABLE `sys_users_roles` (
 -- Records of sys_users_roles
 -- ----------------------------
 INSERT INTO `sys_users_roles` VALUES ('1', '1');
-INSERT INTO `sys_users_roles` VALUES ('2', '2');
+INSERT INTO `sys_users_roles` VALUES ('3', '2');
+INSERT INTO `sys_users_roles` VALUES ('4', '2');
+INSERT INTO `sys_users_roles` VALUES ('5', '3');
+
+-- ----------------------------
+-- Table structure for testing
+-- ----------------------------
+DROP TABLE IF EXISTS `testing`;
+CREATE TABLE `testing` (
+  `id` bigint(20) NOT NULL,
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '展区',
+  `job_id` bigint(20) DEFAULT NULL COMMENT '场馆',
+  `name` varchar(25) DEFAULT NULL COMMENT '姓名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of testing
+-- ----------------------------
+INSERT INTO `testing` VALUES ('1', '18', '11', 'A区01');
+INSERT INTO `testing` VALUES ('2', '18', '11', 'A区02');
+INSERT INTO `testing` VALUES ('3', '19', '11', 'B区01');
+INSERT INTO `testing` VALUES ('4', '19', '11', 'B区02');
+INSERT INTO `testing` VALUES ('5', '20', '10', 'C区内蒙');
 
 -- ----------------------------
 -- Table structure for tool_alipay_config
@@ -1108,7 +1193,7 @@ CREATE TABLE `tool_local_storage` (
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`storage_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='本地存储';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='本地存储';
 
 -- ----------------------------
 -- Records of tool_local_storage

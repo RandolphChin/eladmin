@@ -26,6 +26,8 @@ import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
 import me.zhengjie.utils.PageUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -113,5 +115,12 @@ public class DeptController {
         deptService.verification(deptDtos);
         deptService.delete(deptDtos);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation("查询部门")
+    @GetMapping("/page")
+    @PreAuthorize("@el.check('user:list','dept:list')")
+    public ResponseEntity<Object> queryPage(DeptQueryCriteria criteria, Pageable pageable) throws Exception {
+        return new ResponseEntity<>(deptService.queryAllPage(criteria, pageable),HttpStatus.OK);
     }
 }

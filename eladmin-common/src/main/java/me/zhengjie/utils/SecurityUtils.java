@@ -92,4 +92,14 @@ public class SecurityUtils {
         }
         return DataScopeEnum.ALL.getValue();
     }
+
+    /**
+     * 获取当前用户所属场馆
+     * @return /
+     */
+    public static List<Long> getCurrentUserDataJobs(){
+        UserDetails userDetails = getCurrentUser();
+        JSONArray array = JSONUtil.parseArray(new JSONObject(new JSONObject(userDetails).get("user")).get("jobs"));
+        return JSONUtil.toList(array,Long.class);
+    }
 }

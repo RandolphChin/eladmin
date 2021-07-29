@@ -66,6 +66,11 @@ public class Dept extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "子节点数目", hidden = true)
     private Integer subCount = 0;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    @ApiModelProperty(value = "展区")
+    private Job job;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

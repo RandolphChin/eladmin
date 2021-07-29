@@ -32,6 +32,8 @@ import me.zhengjie.modules.system.service.mapstruct.DeptMapper;
 import me.zhengjie.utils.enums.DataScopeEnum;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -244,6 +246,12 @@ public class DeptServiceImpl implements DeptService {
         if(roleRepository.countByDepts(deptIds) > 0){
             throw new BadRequestException("所选部门存在角色关联，请解除后再试！");
         }
+    }
+
+    @Override
+    public Object queryAllPage(DeptQueryCriteria criteria, Pageable pageable) {
+        Page<Dept> page = deptRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
+        return PageUtil.toPage(page.map(deptMapper::toDto));
     }
 
     private void updateSubCnt(Long deptId){

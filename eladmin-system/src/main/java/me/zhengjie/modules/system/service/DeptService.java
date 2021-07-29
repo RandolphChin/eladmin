@@ -18,6 +18,9 @@ package me.zhengjie.modules.system.service;
 import me.zhengjie.modules.system.domain.Dept;
 import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -121,4 +124,6 @@ public interface DeptService {
      * @param deptDtos /
      */
     void verification(Set<DeptDto> deptDtos);
+
+    Object queryAllPage(DeptQueryCriteria criteria, Pageable pageable);
 }

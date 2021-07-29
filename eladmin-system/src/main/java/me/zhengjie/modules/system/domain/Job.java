@@ -15,6 +15,7 @@
  */
 package me.zhengjie.modules.system.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -53,6 +55,10 @@ public class Job extends BaseEntity implements Serializable {
     @NotNull
     @ApiModelProperty(value = "是否启用")
     private Boolean enabled;
+
+    @JSONField(serialize = false)
+    @OneToMany(mappedBy = "job",cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Dept> depts;
 
     @Override
     public boolean equals(Object o) {

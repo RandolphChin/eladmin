@@ -20,6 +20,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.annotation.DataPermission;
+import me.zhengjie.annotation.DataVenuePermission;
 import me.zhengjie.annotation.Query;
 import javax.persistence.criteria.*;
 import java.lang.reflect.Field;
@@ -38,7 +39,7 @@ public class QueryHelp {
         if(query == null){
             return cb.and(list.toArray(new Predicate[0]));
         }
-        // 数据权限验证
+        // 数据权限验证(展区dept)
         DataPermission permission = query.getClass().getAnnotation(DataPermission.class);
         if(permission != null){
             // 获取数据权限
@@ -49,6 +50,20 @@ public class QueryHelp {
                     list.add(getExpression(permission.fieldName(),join, root).in(dataScopes));
                 } else if (StringUtils.isBlank(permission.joinName()) && StringUtils.isNotBlank(permission.fieldName())) {
                     list.add(getExpression(permission.fieldName(),null, root).in(dataScopes));
+                }
+            }
+        }
+        // 数据权限验证(场馆job)
+        DataVenuePermission venuePermission = query.getClass().getAnnotation(DataVenuePermission.class);
+        if(venuePermission != null){
+            // 获取数据权限
+            List<Long> dataScopes = SecurityUtils.getCurrentUserDataJobs();
+            if(CollectionUtil.isNotEmpty(dataScopes)){
+                if(StringUtils.isNotBlank(venuePermission.joinName()) && StringUtils.isNotBlank(venuePermission.fieldName())) {
+                    Join join = root.join(venuePermission.joinName(), JoinType.LEFT);
+                    list.add(getExpression(venuePermission.fieldName(),join, root).in(dataScopes));
+                } else if (StringUtils.isBlank(venuePermission.joinName()) && StringUtils.isNotBlank(venuePermission.fieldName())) {
+                    list.add(getExpression(venuePermission.fieldName(),null, root).in(dataScopes));
                 }
             }
         }
