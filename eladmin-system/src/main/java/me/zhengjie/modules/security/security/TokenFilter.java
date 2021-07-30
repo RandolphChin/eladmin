@@ -102,7 +102,12 @@ public class TokenFilter extends GenericFilterBean {
             // 去掉令牌前缀
             return bearerToken.replace(properties.getTokenStartWith(), "");
         } else {
-            log.debug("非法Token：{}", bearerToken);
+            String params = request.getParameter(properties.getHeader());
+            if (StringUtils.hasText(params) && params.startsWith(properties.getTokenStartWith())) {
+                return params.replace(properties.getTokenStartWith(), "");
+            }else{
+                log.debug("非法Token：{}", bearerToken);
+            }
         }
         return null;
     }

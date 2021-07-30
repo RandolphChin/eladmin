@@ -15,19 +15,41 @@
  */
 package me.zhengjie.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-/**
- * @author ZhangHouYing
- * @date 2019-08-24 15:44
- */
+
 @Configuration
-public class WebSocketConfig {
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-	@Bean
-	public ServerEndpointExporter serverEndpointExporter() {
-		return new ServerEndpointExporter();
+	@Override
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+		registry
+				.addEndpoint("/api/my-chat-app")
+				.setAllowedOrigins("*")
+				.withSockJS();
 	}
+
+	@Override
+	public void configureMessageBroker(MessageBrokerRegistry registry) {
+		registry.setApplicationDestinationPrefixes("/app");
+		registry.enableSimpleBroker("/topic");
+	}
+
+	/**
+	 * 解决报错
+	 * StompConversionException: STOMP 'content-length' header value 67826  exceeds configured buffer size limit 65536
+	 */
+	@Override
+	public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+		registry.setMessageSizeLimit(Integer.MAX_VALUE); // default : 64 * 1024
+		registry.setSendBufferSizeLimit(Integer.MAX_VALUE);  // default : 512 * 1024
+		registry.setSendTimeLimit(20 * 10000); // default : 10 * 10000
+	}
+
 }
