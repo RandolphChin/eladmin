@@ -83,6 +83,9 @@ public class QuartzConfig {
 		String dbName = environment.getProperty(DB_NAME);
 		String realUrl = this.resolveUrl(url,dbHost,dbPort,dbName);
 		properties.setProperty("org.quartz.dataSource.qzDS.URL",realUrl);
+		if(ObjectUtil.isNotNull(dbPwd)){
+			properties.setProperty("org.quartz.dataSource.qzDS.password",dbPwd);
+		}
 		//创建SchedulerFactoryBean
 		SchedulerFactoryBean factory = new SchedulerFactoryBean();
 		factory.setQuartzProperties(properties);
