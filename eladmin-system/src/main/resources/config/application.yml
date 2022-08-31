@@ -1,0 +1,51 @@
+server:
+  port: 8001
+
+spring:
+  freemarker:
+    check-template-location: false
+  cache:
+    type: redis
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  redis:
+    #数据库索引
+    database: ${REDIS_DB:0}
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    #password: ${REDIS_PWD:}
+    #连接超时时间
+    timeout: 5000
+
+task:
+  pool:
+    # 核心线程池大小
+    core-pool-size: 10
+    # 最大线程数
+    max-pool-size: 30
+    # 活跃时间
+    keep-alive-seconds: 60
+    # 队列容量
+    queue-capacity: 50
+
+#密码加密传输，前端公钥加密，后端私钥解密
+rsa:
+  private_key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAN5vGcVGZPSWAFuD5XWEeQCz7SV0q4qb+1nG54ckcYGCulZi5+4ATpblnWD1GrSrYUy/d6aywXbnW2ZMkIdbDk5WJQjmmhGaGmIKUKd0PmN3+YEIzz6/qigY4exv5JKcnQydMny59ubX1mzpnye5VJQr2lL0r7C8sqs3teawFE7HAgMBAAECgYBIHN7O/T53qTXedYlrqxILr0l/7i47FszLU1f2kVMXOMmufgxRNdpEw5ZdO7l3v2QhHKXu7l8YbHNOXB4zM8sT8avpUn94AG/q1K3GADOP4YnpV8CxXOMZScpLJtSsJrQfjYnmHS1WC+FiEpwVAKprBrv0B43+tGJoTRRJyLcPaQJBAPk9on2wAWVuUQO4Z3zlys4T6V8Z5aANka4WfXrGyQgCjaTZuYzfBclR3iOeGwK3QdXSyhIx5O+WK3LPPsWGv6MCQQDkd1vTed8MRgvixDg7L5TUuHu51EaiOgnk0UccWWen2qcMYN0FEuylH0OscmKNPv7fWXHs/E4RXb82SOc1VFaNAkEA9JX4dHEZHamhVQ5MeDOkzpCZrpriTSujr3wgjTCwLO0chQ6oWMavjf2KCdfo18Rwld2yMSLHcBok7xjTl9GBEwJAfa37YbZlMQdHepOeq1BdezeROITB5nQvBSTrDXlRQFFUG8cdTrE+ZQdx3ud9t120L4Gw3kFdYMhFa8NnDTs78QJBAOjmZ8QAKWdCIBxddQiu3Ymti+HE4XZag4bTOrecdDwj6N2S2IV6KvelgSXo60Bz35Ze+Dnurhvbkc9IVPsO+7o=
+
+mybatis-plus:
+  check-config-location: true
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      mapper-locations: classpath:mapper/*.xml

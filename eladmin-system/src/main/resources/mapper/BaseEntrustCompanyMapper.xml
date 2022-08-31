@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laboratory.modules.base.entrustCompany.service.mapper.BaseEntrustCompanyMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.company_name, a.company_address, a.create_time, a.update_time, a.pid, a.sub_count
+  </sql>
+  -->
+</mapper>

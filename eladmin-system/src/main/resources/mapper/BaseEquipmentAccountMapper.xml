@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laboratory.modules.base.equipment.service.mapper.BaseEquipmentAccountMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.equip_no, a.equip_type, a.out_factory_no, a.equip_name, a.equip_model, a.right_level, a.meterage_range, a.original_value, a.manufacturer, a.contry, a.in_factory_date, a.supplier, a.work_status, a.meterage_sort, a.meterage_type, a.calibre_month, a.calibre_year, a.validity_time_month, a.validity_time, a.sure_interval, a.meterage_form, a.certific_company, a.certific_no, a.on_certific_date, a.calibre_fee, a.calibre_address, a.calibre_date, a.source_way, a.source_company, a.entrust_company, a.entrust_son_company, a.by_user, a.storage_location, a.equip_attach, a.meterage_ask, a.sure_result, a.by_calibrator, a.by_verifier, a.by_signer, a.calibre_status, a.certific_status, a.customer_type, a.remark, a.create_by, a.create_time, a.update_by, a.update_time, a.del_status
+  </sql>
+  -->
+  <delete id="deleteEquipmentByIds" parameterType="Long">
+    update base_equipment_account set del_status = 1 where id in
+    <foreach collection="array" item="delId" open="(" separator="," close=")">
+      #{delId}
+    </foreach>
+  </delete>
+</mapper>
