@@ -1,6 +1,6 @@
 package ${package}.rest;
 
-import Log;
+import com.laboratory.annotation.Log;
 import ${package}.domain.${className};
 import ${package}.service.${className}Service;
 import ${package}.service.dto.${className}Dto;

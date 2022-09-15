@@ -13,7 +13,7 @@ import java.util.List;
 </#if>
 import java.util.Date;
 <#if queryColumns??>
-import Query;
+import com.laboratory.annotation.Query;
 </#if>
 import org.springframework.format.annotation.DateTimeFormat;
 

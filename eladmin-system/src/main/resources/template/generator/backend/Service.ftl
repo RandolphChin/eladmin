@@ -1,7 +1,7 @@
 package ${package}.service;
 
-import PageInfo;
-import CommonService;
+import com.laboratory.base.PageInfo;
+import com.laboratory.base.CommonService;
 import ${package}.domain.${className};
 import ${package}.service.dto.${className}Dto;
 import ${package}.service.dto.${className}QueryParam;

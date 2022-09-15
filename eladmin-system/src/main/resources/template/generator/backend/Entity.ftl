@@ -1,6 +1,6 @@
 package ${package}.domain;
 
-import CommonModel;
+import com.laboratory.base.CommonModel;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

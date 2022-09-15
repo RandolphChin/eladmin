@@ -84,7 +84,7 @@ public class PageUtil extends cn.hutool.core.util.PageUtil {
     }
 
     public static <T> com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> toMybatisPageSort(Pageable pageable) {
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageable.getPageNumber(), pageable.getPageSize());
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageable.getPageNumber() + 1, pageable.getPageSize());
         for (Sort.Order order : pageable.getSort()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setAsc(order.isAscending());

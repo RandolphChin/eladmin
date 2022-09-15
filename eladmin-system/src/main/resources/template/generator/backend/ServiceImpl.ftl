@@ -11,12 +11,12 @@ import EntityExistException;
     </#list>
 </#if>
 import lombok.AllArgsConstructor;
-import PageInfo;
-import QueryHelpMybatisPlus;
-import CommonServiceImpl;
-import ConvertUtil;
-import FileUtil;
-import PageUtil;
+import com.laboratory.base.PageInfo;
+import com.laboratory.base.QueryHelpMybatisPlus;
+import com.laboratory.base.impl.CommonServiceImpl;
+import com.laboratory.utils.ConvertUtil;
+import com.laboratory.utils.FileUtil;
+import com.laboratory.utils.PageUtil;
 import ${package}.domain.${className};
 import ${package}.service.${className}Service;
 import ${package}.service.dto.${className}Dto;

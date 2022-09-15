@@ -1,6 +1,6 @@
 package ${package}.service.mapper;
 
-import CommonMapper;
+import com.laboratory.base.CommonMapper;
 import ${package}.domain.${className};
 import org.springframework.stereotype.Repository;
 
