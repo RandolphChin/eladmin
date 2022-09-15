@@ -1,7 +1,8 @@
 本项目基于[rayson517](https://gitee.com/rayson517/eladmin-plus)的eladmin mybatis-plus版本
-### 更改特性
-定时任务更换成 quartz，原系统定时任务在集群环境下定时任务会执行两次
-Websocket由@ServerEndpoint注解更换为使用STOMP(Simple Text Oriented Messaging Protoco)
+### 功能修改
+>定时任务更换成 quartz，原系统定时任务在集群环境下定时任务会执行两次
+>Websocket由@ServerEndpoint注解更换为使用STOMP(Simple Text Oriented Messaging Protoco)
+>添加minio对象存储
 
 前端项目见 eladmin-ui 模块
 
