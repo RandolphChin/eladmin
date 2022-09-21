@@ -2,11 +2,13 @@ package com.laboratory.modules.system.service.mapper;
 
 import com.laboratory.base.CommonMapper;
 import com.laboratory.modules.system.domain.Menu;
+import com.laboratory.modules.system.service.dto.MenuDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,4 +31,5 @@ public interface MenuMapper extends CommonMapper<Menu> {
             + " AND m.type &lt;&gt; #{type} ORDER BY m.menu_sort ASC</script>"})
     LinkedHashSet<Menu> selectLinkRole(@Param("roleIds") Set<Long> roleIds, @Param("type") Long type);
 
+    List<MenuDto> selectRecursivelyById(Long menuId);
 }

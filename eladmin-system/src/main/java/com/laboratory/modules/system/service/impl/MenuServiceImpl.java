@@ -136,7 +136,13 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
             // 清理缓存
             updateSubCnt(resources.getPid());
         }
-        redisUtils.del("menu::pid:" + (resources.getPid() == null ? 0 : resources.getPid()));
+        List<MenuDto> menuDtoList = menuMapper.selectRecursivelyById(resources.getId());
+        menuDtoList.stream().forEach(k -> {
+            if(ObjectUtil.isNotNull(k)){
+                redisUtils.del("menu::pid:" + (k.getPid() == null ? 0 : k.getPid()));
+            }
+        });
+        //redisUtils.del("menu::pid:" + (resources.getPid() == null ? 0 : resources.getPid()));
         List<String> keys = redisUtils.scan("menu::user:*");
         keys.forEach(item -> redisUtils.del(item));
         return ret > 0;
