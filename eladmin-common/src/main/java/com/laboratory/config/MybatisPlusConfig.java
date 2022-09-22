@@ -2,8 +2,10 @@ package com.laboratory.config;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +16,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan(basePackages ={"com.laboratory.**.mapper"})
 public class MybatisPlusConfig {
+    @Autowired
+    private DataScopePermissionHandler dataScopePermissionHandler;
+
     @Bean
     public MybatisPlusInterceptor paginationInterceptor() {
         MybatisPlusInterceptor paginationInterceptor = new MybatisPlusInterceptor();
@@ -23,6 +28,13 @@ public class MybatisPlusConfig {
         // paginationInterceptor.setLimit(500);
         // 开启 count 的 join 优化,只针对部分 left join
         //paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
+
+        // 添加数据权限插件
+        DataPermissionInterceptor dataPermissionInterceptor = new DataPermissionInterceptor();
+        // 添加自定义的数据权限处理器
+        dataPermissionInterceptor.setDataPermissionHandler(dataScopePermissionHandler);
+        paginationInterceptor.addInnerInterceptor(dataPermissionInterceptor);
+
         PaginationInnerInterceptor page = new PaginationInnerInterceptor();
         paginationInterceptor.addInnerInterceptor(page);
         return paginationInterceptor;

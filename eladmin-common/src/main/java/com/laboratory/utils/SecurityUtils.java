@@ -93,4 +93,14 @@ public class SecurityUtils {
         }
         return DataScopeEnum.ALL.getValue();
     }
+
+    public static Boolean currentUserIsAdmin() {
+        UserDetails userDetails = getCurrentUser();
+        return new JSONObject(new JSONObject(userDetails).get("user")).get("isAdmin", Boolean.class);
+    }
+
+    public static Long getCurrentUserDeptId() {
+        UserDetails userDetails = getCurrentUser();
+        return new JSONObject(new JSONObject(new JSONObject(userDetails).get("user")).get("dept")).get("id", Long.class);
+    }
 }

@@ -155,6 +155,13 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
                 rolesDeptsMapper.insert(rd);
             });
         }
+        // 清理缓存
+        List<User> users = userMapper.findByRoleId(resources.getId());
+        Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
+        redisUtils.delByKeys("menu::user:", userIds);
+        redisUtils.del("role::id:" + resources.getId());
+        redisUtils.delByKeys("data::user:", userIds);
+        redisUtils.delByKeys("role::auth:", userIds);
         return ret > 0;
     }
 
@@ -166,6 +173,8 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
         Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
         redisUtils.delByKeys("menu::user:", userIds);
         redisUtils.del("role::id:" + resources.getId());
+        redisUtils.delByKeys("data::user:", userIds);
+        redisUtils.delByKeys("role::auth:", userIds);
         //this.saveOrUpdate(resources);
 
         RolesMenus rm = new RolesMenus();
