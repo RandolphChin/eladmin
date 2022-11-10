@@ -86,6 +86,12 @@ public class QueryHelpMybatisPlus {
                     Class<?> fieldType = field.getType();
                     Object val = field.get(query);
                     if (ObjectUtil.isNull(val) || "".equals(val)) {
+                        // 需要更改 dept 的 list 方法才能 放开这里的注释
+                        /*
+                        if(q.type() != Query.Type.NOT_NULL && q.type() != Query.Type.IS_NULL) {
+                           continue;
+                        }
+                        */
                         continue;
                     }
                     // 模糊多字段

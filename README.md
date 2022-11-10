@@ -128,3 +128,4 @@ Trigger是用于定义调度时间的元素，即按照什么时间规则去执�
 
 　　job_data：一个blob字段，存放持久化job对象。
 ```
+todo  QueryHelpMybatisPlus.java 中 判断 Query.Type.IS_NULL  或者 Query.Type.NOT_NULL 需要优化，首先要更改 dept的 list方法

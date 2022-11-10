@@ -28,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +63,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             jwtUserDto = userDtoCache.get(username);
             // 检查dataScope是否修改
             List<Long> dataScopes = jwtUserDto.getDataScopes();
+            if(dataScopes.contains(null)){
+                dataScopes.removeAll(Collections.singleton(null)); //移除所有的null元素
+            }
             dataScopes.clear();
             dataScopes.addAll(dataService.getDeptIds(jwtUserDto.getUser()));
             searchDb = false;

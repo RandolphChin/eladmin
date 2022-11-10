@@ -365,6 +365,7 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
      * @param username /
      */
     private void flushCache(String username) {
-        userCacheClean.cleanUserCache(username);
+        //userCacheClean.cleanUserCache(username);
+        userCacheClean.cleanAll();
     }
 }

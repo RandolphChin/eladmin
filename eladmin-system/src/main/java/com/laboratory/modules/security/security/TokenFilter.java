@@ -77,7 +77,8 @@ public class TokenFilter extends GenericFilterBean {
                 cleanUserCache = true;
             } finally {
                 if (cleanUserCache || Objects.isNull(onlineUserDto)) {
-                    userCacheClean.cleanUserCache(String.valueOf(tokenProvider.getClaims(token).get(TokenProvider.AUTHORITIES_KEY)));
+                    // userCacheClean.cleanUserCache(String.valueOf(tokenProvider.getClaims(token).get(TokenProvider.AUTHORITIES_KEY)));
+                    userCacheClean.cleanAll();
                 }
             }
             if (onlineUserDto != null && StringUtils.hasText(token)) {

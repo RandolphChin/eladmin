@@ -1,6 +1,7 @@
 package com.laboratory.config;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.laboratory.annotation.DataScope;
 import com.laboratory.utils.SecurityUtils;
@@ -31,6 +32,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ *  数据权限配置，可以根据 dept_id 配置部门权限 或 根据 user_id 配置个人权限，两者是冲突的
+ *   @DataScope(deptAlias = "执行SQL中要配置数据权限的表别名", deptField = "dept_id")
+ *   @DataScope(userAlias = "执行SQL中要配置数据权限的表别名", userField = "user_id")
+ */
 @Aspect
 @Slf4j
 @Component
@@ -74,6 +80,8 @@ public class DataScopePermissionHandler implements DataPermissionHandler {
             List<Long> dataScopes = SecurityUtils.getCurrentUserDataScope();
             DataScopeParam dataScopeParam = new DataScopeParam(controllerDataScope.deptAlias(),
                     controllerDataScope.deptField(),
+                    controllerDataScope.userAlias(),
+                    controllerDataScope.userField(),
                     isAdmin,
                     dataScopes.stream().collect(Collectors.toSet()));
             threadLocal.set(dataScopeParam);
@@ -112,19 +120,29 @@ public class DataScopePermissionHandler implements DataPermissionHandler {
             where = new HexValue(" 1 = 1 ");
         }
 
-        String deptSql = "".equals(dataScopeParam.deptAlias) ? dataScopeParam.deptField : dataScopeParam.deptAlias + "." + dataScopeParam.deptField;
 
         // 把集合转变为JSQLParser需要的元素列表
         ItemsList itemsList;
+        InExpression inExpression = null;
         if(CollectionUtil.isEmpty(dataScopeParam.secretary)){
             //如果权限为空，则只能看自己部门的
             Long deptId = SecurityUtils.getCurrentUserDeptId();
             itemsList = new ExpressionList(Collections.singletonList(new LongValue(deptId)));
         }else {
             //查看权限内的数据
-            itemsList = new ExpressionList(dataScopeParam.secretary.stream().map(LongValue::new).collect(Collectors.toList()));
+            if(ObjectUtil.isNotEmpty(dataScopeParam.deptField)){
+                // dept_id 过滤的数据
+                String deptSql = "".equals(dataScopeParam.deptAlias) ? dataScopeParam.deptField : dataScopeParam.deptAlias + "." + dataScopeParam.deptField;
+                itemsList = new ExpressionList(dataScopeParam.secretary.stream().map(LongValue::new).collect(Collectors.toList()));
+                inExpression = new InExpression(new Column(deptSql), itemsList);
+            }else if(ObjectUtil.isNotEmpty(dataScopeParam.userField)){
+                // user_id 过滤的数据
+                String userSql = "".equals(dataScopeParam.userAlias) ? dataScopeParam.userField : dataScopeParam.userAlias + "." + dataScopeParam.userField;
+                Long userId = SecurityUtils.getCurrentUserId();
+                itemsList = new ExpressionList(Collections.singletonList(new LongValue(userId)));
+                inExpression = new InExpression(new Column(userSql), itemsList);
+            }
         }
-        InExpression inExpression = new InExpression(new Column(deptSql), itemsList);
         log.debug("where = {}", where);
         log.debug("inExpression = {}", inExpression);
         return new AndExpression(where, inExpression);
@@ -146,6 +164,16 @@ public class DataScopePermissionHandler implements DataPermissionHandler {
          * 部门字段名
          */
         private String deptField;
+
+        /**
+         * 部门表的别名
+         */
+        private String userAlias;
+
+        /**
+         * 用户字段名
+         */
+        private String userField;
 
         /**
          * 是否是管理员
