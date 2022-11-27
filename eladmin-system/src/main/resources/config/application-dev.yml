@@ -49,6 +49,14 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  redis:
+    #数据库索引
+    database: ${REDIS_DB:0}
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    #password: ${REDIS_PWD:}
+    #连接超时时间
+    timeout: 5000
 
 # 登录相关配置
 login:
@@ -120,8 +128,8 @@ file:
   maxSize: 100
   avatarMaxSize: 5
 
-minio:
-  endpoint: http://${MINIO_HOST:localhost}:${MINIO_PORT:9000} #Minio服务所在地址
-  defaultBucketName: tulaoda #存储桶名称
-  accessKey: ${MINIO_ACCESS_KEY:bfrj} #访问的key
-  secretKey: ${MINIO_SECRET_KEY:bfrj8526660} #访问的秘钥
+#minio:
+#  endpoint: http://${MINIO_HOST:localhost}:${MINIO_PORT:9000} #Minio服务所在地址
+#  defaultBucketName: tulaoda #存储桶名称
+#  accessKey: ${MINIO_ACCESS_KEY:bfrj} #访问的key
+#  secretKey: ${MINIO_SECRET_KEY:bfrj8526660} #访问的秘钥

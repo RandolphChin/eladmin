@@ -25,10 +25,12 @@
         </dependency>
 
         <!--minio 分布式文件存储-->
+        <!--
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>${minio.version}</version>
         </dependency>
+        -->
     </dependencies>
 </project>

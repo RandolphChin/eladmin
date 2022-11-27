@@ -1,3 +1,4 @@
+/*
 package com.laboratory.rest;
 
 import com.laboratory.storage.cloud.service.MinioStorageService;
@@ -21,3 +22,4 @@ public class MinIoController {
         return new ResponseEntity<>(localStorage, HttpStatus.OK);
     }
 }
+*/

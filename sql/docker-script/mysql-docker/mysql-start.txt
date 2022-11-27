@@ -1,0 +1,1 @@
+docker run -d -p 3306:3306 --name mysql57 -e MYSQL_ROOT_PASSWORD="root" -e "TZ=Asia/Shanghai" --privileged=true -v D:\tool\dockerFile\mysql\data:/var/lib/mysql -v D:\tool\dockerFile\mysql\my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf mysql:5.7.30 mysqld --server-id=1 --log-bin=mysql-bin

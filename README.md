@@ -1,8 +1,12 @@
 本项目基于[rayson517](https://gitee.com/rayson517/eladmin-plus)的eladmin mybatis-plus版本
 ### 功能修改
 >定时任务更换成 quartz，原系统定时任务在集群环境下定时任务会执行两次
+
 >Websocket由@ServerEndpoint注解更换为使用STOMP(Simple Text Oriented Messaging Protoco)
->添加minio对象存储
+
+>添加minio对象存储，已注释掉，自行开启
+
+>租户字段方式支持多租户，controller中添加注解@DataScope，详情见 DataScopePermissionHandler.java
 
 前端项目见 eladmin-ui 模块
 
@@ -51,38 +55,6 @@ Websocket配置 STOMP 端点时跨域配置同样更改
 >http://localhost:8001/swagger-ui.html
 #### FIND_IN_SET
 字段内容用逗号分隔,关联另一个表查询并显示
-```
-FIND_IN_SET(str,strList)
-
-    str 要查询的字符串
-    strList 字段名，参数以“,”分隔，如(1,2,6,8)
-    查询字段(strList)中包含的结果，返回结果null或记录。
-```
-主表
-```
-|  id   | attach  |
-|  ----  | ----  |
-| 1  | 54,53 |
-| 2  | 59,54,53 |
-```
-附件表
-```
-|  storage_id   | path  |
-|  ----  | ----  |
-| 54  | certificate/c-20220828102428617.png |
-| 53  | certificate/b-20220828102428617.png |
-| 59  | certificate/a-20220828102428617.png |
-```
-```
-SELECT
-	pc.*,
-	GROUP_CONCAT( s.path ) AS attachPath 
-FROM
-	base_person_certific pc
-	LEFT JOIN tool_local_storage s ON FIND_IN_SET( s.storage_id, pc.attach ) 
-GROUP BY
-	pc.id
-```
 ### quartz
 定时任务更改为魂支持群集(quartz cluster)
 

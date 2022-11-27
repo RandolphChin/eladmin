@@ -63,12 +63,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             jwtUserDto = userDtoCache.get(username);
             // 检查dataScope是否修改
             List<Long> dataScopes = jwtUserDto.getDataScopes();
-            if(dataScopes.contains(null)){
-                dataScopes.removeAll(Collections.singleton(null)); //移除所有的null元素
+            try {
+                if(dataScopes.contains(null)){
+                    dataScopes.removeAll(Collections.singleton(null)); //移除所有的null元素
+                }
+                dataScopes.clear();
+                dataScopes.addAll(dataService.getDeptIds(jwtUserDto.getUser()));
+                searchDb = false;
+            }catch (Exception e){
+                // 这里临时处理频繁刷新页面导致 dataScopes.clear()方法会数组越界问题，如果处理未知
+                searchDb = true;
+                userDtoCache.remove(username);
             }
-            dataScopes.clear();
-            dataScopes.addAll(dataService.getDeptIds(jwtUserDto.getUser()));
-            searchDb = false;
         }
         if (searchDb) {
             UserDto user;
