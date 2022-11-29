@@ -46,6 +46,7 @@ public class BaseEntrustCompanyDto implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "父单位ID")
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long pid;
 
     @ApiModelProperty(value = "子单位个数")
