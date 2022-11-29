@@ -63,28 +63,13 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
 
     @Override
     //@Cacheable
-    public List<MenuDto> queryAll(MenuQueryParam query, boolean isQuery) {
-        if (isQuery) {
-            query.setPidIsNull(true);
-        }
-        boolean notEmpty = null != query.getPid() || StringUtils.isNotEmpty(query.getBlurry())
-                || CollectionUtils.isNotEmpty(query.getCreateTime());
-        if (isQuery && notEmpty) {
-            query.setPidIsNull(null);
-        }
+    public List<MenuDto> queryAll(MenuQueryParam query) {
         QueryWrapper wrapper = QueryHelpMybatisPlus.getPredicate(query);
-
-        if (!(isQuery && notEmpty)) {
-            wrapper.or(true).eq("pid", 0);
+        if (ObjectUtil.isNull(query.getPid())) {
+            wrapper.isNull("pid");
         }
         wrapper.orderByAsc("menu_sort");
         return ConvertUtil.convertList(menuMapper.selectList(wrapper), MenuDto.class);
-    }
-
-    @Override
-    //@Cacheable
-    public List<MenuDto> queryAll(MenuQueryParam query){
-        return queryAll(query, true);
     }
 
     @Override

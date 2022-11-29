@@ -1,5 +1,6 @@
 package com.laboratory.modules.system.service.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,9 +22,6 @@ public class DeptQueryParam{
     /** 精确 */
     @Query
     private Long pid;
-
-    @Query(type = Query.Type.IS_NULL, propName = "pid")
-    private Boolean pidIsNull;
 
     /** 模糊 */
     @Query(type = Query.Type.INNER_LIKE)

@@ -17,13 +17,6 @@ import java.util.Set;
 public interface MenuService  extends CommonService<Menu>{
 
     /**
-    * 查询数据分页
-    * @param query 条件
-    * @return PageInfo<MenuDto>
-    */
-    List<MenuDto> queryAll(MenuQueryParam query, boolean isQuery);
-
-    /**
     * 查询所有数据不分页
     * @param query 条件参数
     * @return List<MenuDto>

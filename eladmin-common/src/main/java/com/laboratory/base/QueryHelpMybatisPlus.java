@@ -31,7 +31,8 @@ public class QueryHelpMybatisPlus {
             return queryWrapper;
         }
 
-        // 数据权限验证
+        // 数据权限 见  @DataScope
+       /*
         DataPermission permission = query.getClass().getAnnotation(DataPermission.class);
         if(permission != null){
             // 获取数据权限
@@ -71,7 +72,7 @@ public class QueryHelpMybatisPlus {
                 }
             }
         }
-
+*/
         try {
             List<Field> fields = getAllFields(query.getClass(), new ArrayList<>());
             for (Field field : fields) {
@@ -87,12 +88,10 @@ public class QueryHelpMybatisPlus {
                     Object val = field.get(query);
                     if (ObjectUtil.isNull(val) || "".equals(val)) {
                         // 需要更改 dept 的 list 方法才能 放开这里的注释
-                        /*
                         if(q.type() != Query.Type.NOT_NULL && q.type() != Query.Type.IS_NULL) {
                            continue;
                         }
-                        */
-                        continue;
+                       //continue;
                     }
                     // 模糊多字段
                     if (ObjectUtil.isNotEmpty(blurry)) {

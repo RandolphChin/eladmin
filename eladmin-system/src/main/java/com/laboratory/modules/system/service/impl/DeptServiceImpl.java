@@ -59,54 +59,14 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
 
     @Override
     //@Cacheable
-    public List<DeptDto> queryAll(DeptQueryParam query, Boolean isQuery){
-        if (isQuery) {
-            query.setPidIsNull(true);
+    public List<DeptDto> queryAll(DeptQueryParam query){
+        QueryWrapper<Dept> queryWrapper = QueryHelpMybatisPlus.getPredicate(query);
+        if (ObjectUtil.isNull(query.getPid())) {
+            queryWrapper.isNull("pid");
         }
-        boolean notEmpty = StrUtil.isNotEmpty(query.getName()) || null != query.getPid()
-                || CollectionUtils.isNotEmpty(query.getCreateTime());
-        if (isQuery && notEmpty) {
-            query.setPidIsNull(null);
-        }
-
-        return ConvertUtil.convertList(deptMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), DeptDto.class);
+        return ConvertUtil.convertList(deptMapper.selectList(queryWrapper), DeptDto.class);
     }
 
-    public List<DeptDto> queryAll2(DeptQueryParam query, Boolean isQuery) throws Exception {
-        //Sort sort = new Sort(Sort.Direction.ASC, "deptSort");
-        String dataScopeType = SecurityUtils.getDataScopeType();
-        if (isQuery) {
-            if (dataScopeType.equals(DataScopeEnum.ALL.getValue())) {
-                query.setPidIsNull(true);
-            }
-            List<Field> fields = QueryHelpMybatisPlus.getAllFields(query.getClass(), new ArrayList<>());
-            List<String> fieldNames = new ArrayList<String>() {{
-                add("pidIsNull");
-                add("enabled");
-            }};
-            for (Field field : fields) {
-                //设置对象的访问权限，保证对private的属性的访问
-                field.setAccessible(true);
-                Object val = field.get(query);
-                if (fieldNames.contains(field.getName())) {
-                    continue;
-                }
-                if (ObjectUtil.isNotNull(val)) {
-                    query.setPidIsNull(null);
-                    break;
-                }
-            }
-        }
-        QueryWrapper<Dept> wrapper = QueryHelpMybatisPlus.getPredicate(query);
-        wrapper.lambda().orderByAsc(Dept::getDeptSort);
-        List<DeptDto> list = ConvertUtil.convertList(deptMapper.selectList(wrapper), DeptDto.class);//deptMapper.toDto(deptRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), sort));
-
-        // 如果为空，就代表为自定义权限或者本级权限，就需要去重，不理解可以注释掉，看查询结果
-        if (StringUtils.isBlank(dataScopeType)) {
-            return deduplication(list);
-        }
-        return list;
-    }
     private List<DeptDto> deduplication(List<DeptDto> list) {
         List<DeptDto> deptDtos = new ArrayList<>();
         for (DeptDto deptDto : list) {

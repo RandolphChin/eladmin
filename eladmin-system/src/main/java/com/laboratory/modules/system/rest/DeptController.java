@@ -52,14 +52,14 @@ public class DeptController {
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('dept:list')")
     public void download(HttpServletResponse response, DeptQueryParam criteria) throws Exception {
-        deptService.download(deptService.queryAll(criteria, false), response);
+        deptService.download(deptService.queryAll(criteria), response);
     }
 
     @ApiOperation("查询部门")
     @GetMapping
     @PreAuthorize("@el.check('user:list','dept:list')")
     public ResponseEntity<Object> query(DeptQueryParam criteria) throws Exception {
-        List<DeptDto> deptDtos = deptService.queryAll(criteria, true);
+        List<DeptDto> deptDtos = deptService.queryAll(criteria);
         return new ResponseEntity<>(PageUtil.toPage(deptDtos, deptDtos.size()),HttpStatus.OK);
     }
 

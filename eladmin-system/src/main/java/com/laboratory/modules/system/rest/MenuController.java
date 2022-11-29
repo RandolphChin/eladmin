@@ -58,7 +58,7 @@ public class MenuController {
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")
     public ResponseEntity<Object> query(MenuQueryParam criteria) throws Exception {
-        List<MenuDto> menuDtoList = menuService.queryAll(criteria, true);
+        List<MenuDto> menuDtoList = menuService.queryAll(criteria);
         return new ResponseEntity<>(PageUtil.toPage(menuDtoList, menuDtoList.size()),HttpStatus.OK);
     }
 
@@ -144,7 +144,7 @@ public class MenuController {
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('menu:list')")
     public void download(HttpServletResponse response, MenuQueryParam criteria) throws Exception {
-        menuService.download(menuService.queryAll(criteria, false), response);
+        menuService.download(menuService.queryAll(criteria), response);
     }
 
 }

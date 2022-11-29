@@ -20,7 +20,7 @@ public interface DeptService  extends CommonService<Dept>{
     * @param query 条件参数
     * @return List<DeptDto>
     */
-    List<DeptDto> queryAll(DeptQueryParam query, Boolean isQuery);
+    List<DeptDto> queryAll(DeptQueryParam query);
 
     List<DeptDto> queryAll();
 

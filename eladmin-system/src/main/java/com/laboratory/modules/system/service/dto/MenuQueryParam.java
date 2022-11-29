@@ -25,9 +25,6 @@ public class MenuQueryParam{
     @Query
     private Long pid;
 
-    @Query(type = Query.Type.IS_NULL, propName = "pid")
-    private Boolean pidIsNull;
-
     /** BETWEEN */
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Query(type = Query.Type.BETWEEN)
