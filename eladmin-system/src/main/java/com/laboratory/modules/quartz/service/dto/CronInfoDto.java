@@ -13,4 +13,6 @@ public class CronInfoDto {
     private Long nextFireTime;
     private String triggerState;
     private String cronExpression;
+    
+    private Boolean delLoading = false;
 }

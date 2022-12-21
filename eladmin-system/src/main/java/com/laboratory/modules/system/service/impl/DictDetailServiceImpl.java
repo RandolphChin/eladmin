@@ -1,6 +1,9 @@
 package com.laboratory.modules.system.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.laboratory.exception.BadRequestException;
+import com.laboratory.exception.EntityExistException;
 import com.laboratory.modules.system.service.mapper.DictDetailMapper;
 import com.laboratory.modules.system.service.mapper.DictMapper;
 import lombok.AllArgsConstructor;
@@ -73,7 +76,11 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateById(DictDetailDto resources) {
+        DictDetail existDd = getById(resources.getId());
         DictDetail detail = ConvertUtil.convert(resources, DictDetail.class);
+        if(ObjectUtil.isNotNull(lambdaQuery().eq(DictDetail::getDictId, existDd.getDictId()).eq(DictDetail::getValue,detail.getValue()).one())){
+            throw new BadRequestException("字典值 " +detail.getValue() +" 已经存在");
+        }
         boolean ret = dictDetailMapper.updateById(detail) > 0;
         // 清理缓存
         delCaches(detail.getDictId());
@@ -85,6 +92,9 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
     public boolean save(DictDetailDto resources){
         DictDetail detail = ConvertUtil.convert(resources, DictDetail.class);
         detail.setDictId(resources.getDict().getId());
+        if(ObjectUtil.isNotNull(lambdaQuery().eq(DictDetail::getDictId, detail.getDictId()).eq(DictDetail::getValue,detail.getValue()).one())){
+            throw new EntityExistException(DictDetail.class,"字典值",detail.getValue());
+        }
         boolean ret = dictDetailMapper.insert(detail) > 0;
         // 清理缓存
         delCaches(detail.getDictId());

@@ -46,18 +46,9 @@ public class BaseEntrustCompanyServiceImpl extends CommonServiceImpl<BaseEntrust
 
     @Override
     public PageInfo<BaseEntrustCompanyDto> queryAll(BaseEntrustCompanyQueryParam query, Pageable pageable, boolean isQuery) {
-        if (isQuery) {
-            query.setPidIsNull(true);
-        }
-        boolean notEmpty = null != query.getPid() || StringUtils.isNotEmpty(query.getCompanyName())
-                || CollectionUtils.isNotEmpty(query.getCreateTime());
-        if (isQuery && notEmpty) {
-            query.setPidIsNull(null);
-        }
         QueryWrapper wrapper = QueryHelpMybatisPlus.getPredicate(query);
-
-        if (!(isQuery && notEmpty)) {
-            wrapper.or(true).eq("pid", 0);
+        if (ObjectUtil.isNull(query.getPid())) {
+            wrapper.isNull("pid");
         }
         IPage<BaseEntrustCompany> queryPage = PageUtil.toMybatisPage(pageable);
         IPage<BaseEntrustCompany> page = baseEntrustCompanyMapper.selectPage(queryPage, wrapper);
@@ -156,18 +147,9 @@ public class BaseEntrustCompanyServiceImpl extends CommonServiceImpl<BaseEntrust
 
     @Override
     public List<BaseEntrustCompanyDto> queryList(BaseEntrustCompanyQueryParam query, boolean isQuery) {
-        if (isQuery) {
-            query.setPidIsNull(true);
-        }
-        boolean notEmpty = null != query.getPid() || StringUtils.isNotEmpty(query.getCompanyName())
-                || CollectionUtils.isNotEmpty(query.getCreateTime());
-        if (isQuery && notEmpty) {
-            query.setPidIsNull(null);
-        }
         QueryWrapper wrapper = QueryHelpMybatisPlus.getPredicate(query);
-
-        if (!(isQuery && notEmpty)) {
-            wrapper.or(true).eq("pid", 0);
+        if (ObjectUtil.isNull(query.getPid())) {
+            wrapper.isNull("pid");
         }
         wrapper.orderByDesc("create_time");
         return ConvertUtil.convertList(baseEntrustCompanyMapper.selectList(wrapper),BaseEntrustCompanyDto.class);
