@@ -1,6 +1,7 @@
 package com.laboratory.modules.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.laboratory.modules.system.service.dto.*;
@@ -215,9 +216,9 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
         //usersRolesService.getUsersRoleList(resources.getId());
         // 如果用户的角色改变
         //if (!resources.getRoles().equals(xxxx.getRoles())) {
-            redisUtils.del(CacheKey.DATA_USER + resources.getId());
-            redisUtils.del(CacheKey.MENU_USER + resources.getId());
-            redisUtils.del(CacheKey.ROLE_AUTH + resources.getId());
+        redisUtils.del(CacheKey.DATA_USER + resources.getId());
+        redisUtils.del(CacheKey.MENU_USER + resources.getId());
+        redisUtils.del(CacheKey.ROLE_AUTH + resources.getId());
         //}
 
         // 如果用户名称修改
@@ -248,19 +249,22 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
             });
         }
 
-        user.setUsername(resources.getUsername());
-        user.setEmail(resources.getEmail());
-        user.setEnabled(resources.getEnabled());
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getUsername, resources.getUsername());
+        updateWrapper.set(User::getEmail, resources.getEmail());
+        updateWrapper.set(User::getEnabled, resources.getEnabled());
         if (resources.getDept() != null) {
-            user.setDeptId(resources.getDept().getId());
+            updateWrapper.set(User::getDeptId, resources.getDept().getId());
         } else {
-            user.setDeptId(null);
+            // user.setDeptId(null);  这种方式不生效
+            updateWrapper.set(User::getDeptId, null);
         }
-        user.setPhone(resources.getPhone());
-        user.setGender(resources.getGender());
+        updateWrapper.set(User::getPhone,resources.getPhone());
+        updateWrapper.set(User::getGender,resources.getGender());
 
+        updateWrapper.eq(User::getId, resources.getId());
         delCaches(user.getId(), user.getUsername());
-        return userMapper.updateById(user) > 0;
+        return update(updateWrapper);
     }
 
     @Override
