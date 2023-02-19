@@ -119,7 +119,7 @@ public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements
 
     @Override
     public void verification(Set<Long> ids) {
-        int count = usersJobsMapper.lambdaQuery().in(UsersJobs::getUserId, ids).count();
+        int count = usersJobsMapper.lambdaQuery().in(UsersJobs::getJobId, ids).count();
         if(count > 0){
             throw new BadRequestException("所选的岗位中存在用户关联，请解除关联再试！");
         }
