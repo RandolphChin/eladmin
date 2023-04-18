@@ -80,6 +80,7 @@ public class UserController {
             criteria.getDeptIds().add(criteria.getDeptId());
             criteria.getDeptIds().addAll(deptService.getDeptChildren(criteria.getDeptId(),
                     deptService.findByPid(criteria.getDeptId())));
+            criteria.setDeptId(null);
         }
         // 数据权限
         List<Long> dataScopes = dataService.getDeptIds(userService.findByName(SecurityUtils.getCurrentUsername()));
